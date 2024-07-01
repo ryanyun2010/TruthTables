@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Truth Table Generator</title>
+    <link rel="stylesheet" href="https://bootswatch.com/5/cyborg/bootstrap.min.css">
+    <style>
+        button {
+            margin-left: 10px;
+            padding: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <div class="container mt-2 align-center">
+            <button type="button" class="btn btn-primary ml-2 mr-2" id="and">∧ (Conjunction)</button>
+            <button type="button" class="btn btn-primary ml-2 mr-2" id="or">∨ (Disjunction)</button>
+            <button type="button" class="btn btn-primary ml-2 mr-2" id="con">→ (Conditional)</button>
+            <button type="button" class="btn btn-primary ml-2 mr-2" id="bic">↔ (Biconditional)</button>
+            <button type="button" class="btn btn-primary ml-2 mr-2" id="neg">¬ (Negation)</button>
+        </div>
+    </center>
+    <div class="modal" style="display: none" id="DisjunctionModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="DisjunctionTitle">What is the wff on the left side of the disjunction
+                        symbol?</h5>
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> -->
+                    <!-- <span a/ria-hidden="true"></span> -->
+                    <!-- </button> -->
+                </div>
+                <div class="modal-body">
+                    <p id="DisjunctionTxt"></p>
+                </div>
+                <!-- <div class="modal-footer"> -->
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+    <div class="modal" style="display: none" id="ConjunctionModal">
+
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ConjunctionTitle">What is the wff on the left side of the conjunction
+                        symbol?</h5>
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> -->
+                    <!-- <span a/ria-hidden="true"></span> -->
+                    <!-- </button> -->
+                </div>
+                <div class="modal-body">
+                    <p id="ConjunctionTxt"></p>
+                </div>
+                <!-- <div class="modal-footer"> -->
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+    <div class="modal" style="display: none" id="NegationModal">
+
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="NegationTitle">What is the wff you would like to negate?</h5>
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> -->
+                    <!-- <span a/ria-hidden="true"></span> -->
+                    <!-- </button> -->
+                </div>
+                <div class="modal-body">
+                    <p id="NegationTxt"></p>
+                </div>
+                <!-- <div class="modal-footer"> -->
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+    <div class="modal" style="display: none" id="ConditionalModal">
+
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ConditionalTitle">What is the wff on the left side of the biconditional
+                        symbol?</h5>
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> -->
+                    <!-- <span a/ria-hidden="true"></span> -->
+                    <!-- </button> -->
+                </div>
+                <div class="modal-body">
+                    <p id="ConditionalTxt"></p>
+                </div>
+                <!-- <div class="modal-footer"> -->
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+    <div class="modal" style="display: none" id="BiconditionalModal">
+
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="BiconditionalTitle">What is the wff on the left side of the conditional
+                        symbol?</h5>
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> -->
+                    <!-- <span a/ria-hidden="true"></span> -->
+                    <!-- </button> -->
+                </div>
+                <div class="modal-body">
+                    <p id="BiconditionalTxt"></p>
+                </div>
+                <!-- <div class="modal-footer"> -->
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+    <div class="container mt-2 text-center">
+        <table class="table">
+            <thead>
+                <tr class="table-primary" id="TABLEHEADER">
+                    <!-- <th scope="col" class = "border">P</th> -->
+                    <!-- <th scope="col" class = "border">Q</th> -->
+                    <!-- <th scope="col">Column heading</th> -->
+                    <!-- <th scope="col">Column heading</th> -->
+                </tr>
+            </thead>
+            <tbody id="TABLEBODY">
+                <!-- <tr class = "table-default"> -->
+                <!-- <td class = "border">1</td> -->
+                <!-- <td class = "border">0</td> -->
+                <!-- </tr> -->
+            </tbody>
+        </table>
+    </div>
+
+
+    <script>
+        var numberofvars = parseFloat(prompt("How many variables are in your problem?"))
+
+
+        var tabledata = []; // tabledata[x][y], cols are bigger
+        var tablehead = document.getElementById("TABLEHEADER");
+        var tablebody = document.getElementById("TABLEBODY");
+        var varnames = []
+        var headernames = []
+        // if (numberofvars == 1) {
+        // varnames = ["A"]
+        // } else if (numberofvars == 2) {
+        // varnames = ["P", "Q"]
+        // } else if (numberofvars == 3) {
+        // varnames = ["M", "N", "P"]
+        // } else {
+        var varnames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R",
+            "S", "T"
+        ];
+        // }
+        // 
+        for (var i = 0; i < numberofvars; i++) {
+
+            tabledata.push([]);
+            headernames.push(varnames[i])
+        }
+
+        function createPossiblitiesArray(num, arr) {
+            arr = arr || [
+                [1],
+                [0]
+            ]
+            arrnew = [];
+            // console.log(arr);
+            if (arr[0].length == num) {
+                return arr
+            } else {
+                for (var e of arr) {
+                    arrnew.push(e.concat([1]))
+                    arrnew.push(e.concat([0]))
+                }
+
+                return createPossiblitiesArray(num, arrnew)
+            }
+        }
+
+        var possibilities = createPossiblitiesArray(numberofvars);
+        console.log(possibilities);
+        var i = 0;
+        for (var i = 0; i < possibilities[0].length; i++) {
+            for (var j = 0; j < possibilities.length; j++) {
+                tabledata[i].push(possibilities[j][i]);
+            }
+        }
+
+        function or() {
+            var col1 = parseFloat(prompt("Col 1")) - 1
+            var col2 = parseFloat(prompt("Col 2")) - 1
+            headernames.push("(" + headernames[col1] + " ∨ " + headernames[col2] + ")");
+            tabledata.push([]);
+            for (var i = 0; i < tabledata[col1].length; i++) {
+
+                var x = tabledata[col1][i];
+                var y = tabledata[col2][i];
+
+                if (x || y) {
+                    tabledata[headernames.length - 1][i] = 1;
+                } else {
+                    tabledata[headernames.length - 1][i] = 0;
+                }
+            }
+        }
+
+        function and() {
+            var col1 = parseFloat(prompt("Col 1")) - 1
+            var col2 = parseFloat(prompt("Col 2")) - 1
+            headernames.push("(" + headernames[col1] + " ∧ " + headernames[col2] + ")");
+            tabledata.push([]);
+            for (var i = 0; i < tabledata[col1].length; i++) {
+
+                var x = tabledata[col1][i];
+                var y = tabledata[col2][i];
+
+                if (x && y) {
+                    tabledata[headernames.length - 1][i] = 1;
+                } else {
+                    tabledata[headernames.length - 1][i] = 0;
+                }
+            }
+        }
+
+        function conditional() {
+            var col1 = parseFloat(prompt("Col 1")) - 1
+            var col2 = parseFloat(prompt("Col 2")) - 1
+            headernames.push("(" + headernames[col1] + " → " + headernames[col2] + ")");
+            tabledata.push([]);
+            for (var i = 0; i < tabledata[col1].length; i++) {
+
+                var x = tabledata[col1][i];
+                var y = tabledata[col2][i];
+
+                if (x && y || !x && y || !x && !y) {
+                    tabledata[headernames.length - 1][i] = 1;
+                } else {
+                    tabledata[headernames.length - 1][i] = 0;
+                }
+            }
+        }
+
+        function biconditional() {
+            var col1 = parseFloat(prompt("Col 1")) - 1
+            var col2 = parseFloat(prompt("Col 2")) - 1
+            headernames.push("(" + headernames[col1] + " ↔ " + headernames[col2] + ")");
+            tabledata.push([]);
+            for (var i = 0; i < tabledata[col1].length; i++) {
+
+                var x = tabledata[col1][i];
+                var y = tabledata[col2][i];
+
+                if (x == y) {
+                    tabledata[headernames.length - 1][i] = 1;
+                } else {
+                    tabledata[headernames.length - 1][i] = 0;
+                }
+            }
+        }
+
+        function not() {
+            var col1 = parseFloat(prompt("Col 1")) - 1
+            headernames.push("¬" + headernames[col1]);
+            tabledata.push([]);
+            for (var i = 0; i < tabledata[col1].length; i++) {
+
+                var x = tabledata[col1][i];
+
+                if (x) {
+                    tabledata[headernames.length - 1][i] = 0;
+                } else {
+                    tabledata[headernames.length - 1][i] = 1;
+                }
+            }
+        }
+
+        function generateTable() {
+            tablehead.innerHTML = "";
+            tablebody.innerHTML = "";
+            for (var name of headernames) {
+                tablehead.innerHTML += "<th scope = 'col' class = 'border'>" + name + "</th>";
+            }
+            for (var i = 0; i < tabledata[0].length; i++) {
+                var temp = ""
+                temp += "<tr class = 'table-default'> "
+                for (var d of getTableRow(i)) {
+                    temp += "<td class = 'border'>" + d + "</td>";
+                }
+                temp += "</tr>"
+                tablebody.innerHTML += temp
+            }
+
+        }
+
+
+        function getTableRow(y) {
+            var temp = []
+            for (var i = 0; i < tabledata.length; i++) {
+                temp.push(tabledata[i][y]);
+            }
+            return temp;
+        }
+
+        setInterval(function () {
+            // time()
+            generateTable()
+            // timeEnd()
+        }, 200);
+
+
+
+        document.getElementById("and").addEventListener("click", function () {
+            ModalConjunction()
+            document.getElementById("ConjunctionModal").style.display = "block";
+        })
+        document.getElementById("or").addEventListener("click", function () {
+            ModalDisjunction()
+            document.getElementById("DisjunctionModal").style.display = "block";
+        })
+        document.getElementById("con").addEventListener("click", function () {
+            ModalConditional()
+            document.getElementById("ConditionalModal").style.display = "block";
+        })
+        document.getElementById("bic").addEventListener("click", function () {
+            ModalBiconditional()
+            console.log("test")
+            document.getElementById("BiconditionalModal").style.display = "block";
+        })
+        document.getElementById("neg").addEventListener("click", function () {
+            ModalNegation()
+            console.log("test")
+            document.getElementById("NegationModal").style.display = "block";
+        }) 
+        function ModalNegation() {
+            document.getElementById("NegationTxt").innerHTML = "";
+            var i = 0;
+            for (var name of headernames) {
+                document.getElementById("NegationTxt").innerHTML +=
+                    "<button class = 'btn btn-primary' onclick = NegationF(" + i + ") '" + name + "'>" + name +
+                    "</button>"
+                i++;
+            }
+        } 
+        function ModalConditional() {
+            document.getElementById("ConditionalTxt").innerHTML = "";
+            var i = 0;
+            for (var name of headernames) {
+                document.getElementById("ConditionalTxt").innerHTML +=
+                    "<button class = 'btn btn-primary' onclick = ConditionalF(" + i + ") '" + name + "'>" + name +
+                    "</button>"
+                i++;
+            }
+        }
+        function ModalBiconditional() {
+            document.getElementById("BiconditionalTxt").innerHTML = "";
+            var i = 0;
+            for (var name of headernames) {
+                document.getElementById("BiconditionalTxt").innerHTML +=
+                    "<button class = 'btn btn-primary' onclick = BiconditionalF(" + i + ") '" + name + "'>" + name +
+                    "</button>"
+                i++;
+            }
+        }
+        function ModalConjunction() {
+            document.getElementById("ConjunctionTxt").innerHTML = "";
+            var i = 0;
+            for (var name of headernames) {
+                document.getElementById("ConjunctionTxt").innerHTML +=
+                    "<button class = 'btn btn-primary' onclick = ConjunctionF(" + i + ") '" + name + "'>" + name +
+                    "</button>"
+                i++;
+            }
+        }
+        function ModalDisjunction() {
+            document.getElementById("DisjunctionTxt").innerHTML = "";
+            var i = 0;
+            for (var name of headernames) {
+                document.getElementById("DisjunctionTxt").innerHTML +=
+                    "<button class = 'btn btn-primary' onclick = DisjunctionF(" + i + ") '" + name + "'>" + name +
+                    "</button>"
+                i++;
+            }
+        }
+
+        var num1 = null;
+        var num2 = null;
+
+        function ConjunctionF(num) {
+            if (num1 == null) {
+                num1 = num;
+                document.getElementById("ConjunctionTitle").innerHTML =
+                    "What is the wff on the right side of the conjunction symbol?";
+                ModalConjunction()
+            } else if (num2 == null) {
+                num2 = num;
+                headernames.push("(" + headernames[num1] + " ∧ " + headernames[num2] + ")");
+                tabledata.push([]);
+                for (var i = 0; i < tabledata[num1].length; i++) {
+
+                    var x = tabledata[num1][i];
+                    var y = tabledata[num2][i];
+
+                    if (x && y) {
+                        tabledata[headernames.length - 1][i] = 1;
+                    } else {
+                        tabledata[headernames.length - 1][i] = 0;
+                    }
+                }
+                num1 = null
+                num2 = null
+                document.getElementById("ConjunctionTitle").innerHTML =
+                    "What is the wff on the left side of the conjunction symbol?";
+                document.getElementById("ConjunctionModal").style.display = "none";
+            }
+        }
+        function NegationF(num) {
+            if (num1 == null) {
+                num1 = num;
+                headernames.push("¬" + headernames[num1]);
+                tabledata.push([]);
+                for (var i = 0; i < tabledata[num1].length; i++) {
+
+                    var x = tabledata[num1][i];
+
+                    if (!x) {
+                        tabledata[headernames.length - 1][i] = 1;
+                    } else {
+                        tabledata[headernames.length - 1][i] = 0;
+                    }
+                }
+                num1 = null
+                num2 = null
+                document.getElementById("NegationModal").style.display = "none";
+            }
+        }
+        function BiconditionalF(num) {
+            if (num1 == null) {
+                num1 = num;
+                document.getElementById("BiconditionalTitle").innerHTML =
+                    "What is the wff on the right side of the biconditional symbol?";
+                ModalConjunction()
+            } else if (num2 == null) {
+                num2 = num;
+                headernames.push("(" + headernames[num1] + " ↔ " + headernames[num2] + ")");
+                tabledata.push([]);
+                for (var i = 0; i < tabledata[num1].length; i++) {
+
+                    var x = tabledata[num1][i];
+                    var y = tabledata[num2][i];
+
+                    if (x && y || !x && !y) {
+                        tabledata[headernames.length - 1][i] = 1;
+                    } else {
+                        tabledata[headernames.length - 1][i] = 0;
+                    }
+                }
+                num1 = null
+                num2 = null
+                document.getElementById("BiconditionalTitle").innerHTML =
+                    "What is the wff on the left side of the conjunction symbol?";
+                document.getElementById("BiconditionalModal").style.display = "none";
+            }
+        }
+
+        function DisjunctionF(num) {
+            if (num1 == null) {
+                num1 = num;
+                document.getElementById("DisjunctionTitle").innerHTML =
+                    "What is the wff on the right side of the disjunction symbol?";
+                ModalConjunction()
+            } else if (num2 == null) {
+                num2 = num;
+                headernames.push("(" + headernames[num1] + " ∨ " + headernames[num2] + ")");
+                tabledata.push([]);
+                for (var i = 0; i < tabledata[num1].length; i++) {
+
+                    var x = tabledata[num1][i];
+                    var y = tabledata[num2][i];
+
+                    if (x || y) {
+                        tabledata[headernames.length - 1][i] = 1;
+                    } else {
+                        tabledata[headernames.length - 1][i] = 0;
+                    }
+                }
+                num1 = null
+                num2 = null
+                document.getElementById("DisjunctionTitle").innerHTML =
+                    "What is the wff on the left side of the disjunction symbol?";
+                document.getElementById("DisjunctionModal").style.display = "none";
+            }
+        }
+        function ConditionalF(num) {
+            if (num1 == null) {
+                num1 = num;
+                document.getElementById("ConditionalTitle").innerHTML =
+                    "What is the wff on the right side of the conditional symbol?";
+                ModalConditional()
+            } else if (num2 == null) {
+                num2 = num;
+                headernames.push("(" + headernames[num1] + " → " + headernames[num2] + ")");
+                tabledata.push([]);
+                for (var i = 0; i < tabledata[num1].length; i++) {
+
+                    var x = tabledata[num1][i];
+                    var y = tabledata[num2][i];
+
+                    if (x && y || !x && y || !x && !y) {
+                        tabledata[headernames.length - 1][i] = 1;
+                    } else {
+                        tabledata[headernames.length - 1][i] = 0;
+                    }
+                }
+                num1 = null
+                num2 = null
+                document.getElementById("ConditionalTitle").innerHTML =
+                    "What is the wff on the left side of the conditional symbol?";
+                document.getElementById("ConditionalModal").style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+</html>
